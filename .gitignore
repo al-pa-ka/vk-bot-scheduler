@@ -1,0 +1,10 @@
+.idea
+__pycahce__
+venv
+proj_info.txt
+requirments.txt
+auth.txt
+open_weather_key.txt
+logs.txt
+errors.txt
+database.sqlite3
