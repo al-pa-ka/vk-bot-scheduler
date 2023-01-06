@@ -1,5 +1,5 @@
 from vkbottle.dispatch.rules import ABCRule
-from vkbottle.bot import Message
+from vkbottle.bot import Message, MessageEvent
 import typing
 
 
@@ -16,24 +16,37 @@ class Unsubscribe(ABCRule[Message]):
             return True
         return False
 
-print('here')
+
 class ManualMailing(ABCRule[Message]):
     async def check(self, event) -> typing.Union[str, bool]:
-        print('here')
-        print(event.text)
         if '!command -mm' in event.text:
             message = event.text.replace('!command -mm', '')
-            print(message)
             return {'handled': message.strip()}
         return False
+
 
 class Attachments(ABCRule[Message]):
     async def check(self, event) -> dict:
         result = {'photo': False, 'audio': False}
         if event.get_photo_attachments():
-            print(event.get_photo_attachments())
-            result['photo'] = True
+            photos = event.get_photo_attachments()[0]
+            photo = photos.sizes[-1]
+            result['photo'] = photo.url
         if event.get_audio_attachments():
             result['audio'] = True
 
         return {'attachment_types': result}
+
+
+class Weather(ABCRule[Message]):
+    async def check(self, event):
+        if 'погода' == event.text.lower():
+            return True
+        return False
+
+
+class Forecast(ABCRule[Message]):
+    async def check(self, event):
+        if 'прогноз' == event.text.lower():
+            return True
+        return False

@@ -8,3 +8,4 @@ open_weather_key.txt
 logs.txt
 errors.txt
 database.sqlite3
+translator.py
